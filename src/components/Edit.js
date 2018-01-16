@@ -1,17 +1,17 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import ConfirmModal from './subcomponents/ConfirmModal';
 
 // import axios
-
+import axios from 'axios';
 
 class Edit extends Component {
-    constructor(){
+    constructor() {
         super();
         this.state = {
             title: '',
-            subTitle:'',
-            image:'',
-            text:'',
+            subTitle: '',
+            image: '',
+            text: '',
             confirm: ''
         }
         this.yes = this.yes.bind(this);
@@ -19,54 +19,83 @@ class Edit extends Component {
     }
 
     // insert componentWillMount
+    componentWillMount() {
+        axios.get(`/api/blog/${this.props.match.params.id}`).then(res => {
+            // console.log('This is props incoming to edit', this.props)
+            // console.log('this is how we found the id on params', this.props.match)
+            // console.log('res in the edit component', res)
+            this.setState({
+                title: res.data.title,
+                text: res.data.text,
+                image: res.data.image,
+                subTitle: res.data.subTitle
+            })
+        }).catch((err) =>console.log(err));
+    }
 
-    
     // insert updatePost 
-    
+    updatePost() {
+        let body ={
+            title: this.state.title,
+            subTitle: this.state.subTitle,
+            image: this.state.image,
+            text: this.state.text
+        }
+        axios.put(`/api/blog/${this.props.match.params.id}`, body).then(res =>{
+            this.props.history.push(`/blog/${this.props.match.params.id}`)
+
+        }).catch((res) => console.log(res));
+    }
+
 
     // Insert into the deletePost 
+    deletePost() {
+        axios.delete(`/api/blog/${this.props.match.params.id}`).then(res =>{
+            this.props.history.push('/search')
+        }).catch((err) => console.log(err));
+    }
 
-    
+
     render() {
-        let {title, subTitle, image, text} = this.state;
+        let { title, subTitle, image, text } = this.state;
         return (
             <div className='content'>
                 <div className="add-blog">
                     <div className="input-group">
                         <label htmlFor="">Title</label>
-                        <input value={title} onChange={e=>this.titleChange(e.target.value)} type="text"/>
+                        <input value={title} onChange={e => this.titleChange(e.target.value)} type="text" />
                     </div>
                     <div className="input-group">
                         <label htmlFor="">Sub-Title</label>
-                        <input value={subTitle} onChange={e=>this.subTitleChange(e.target.value)} type="text"/>
+                        <input value={subTitle} onChange={e => this.subTitleChange(e.target.value)} type="text" />
                     </div>
                     <div className="input-group">
                         <label htmlFor="">Photo Url</label>
-                        <input value={image} onChange={e=>this.imageChange(e.target.value)} type="text"/>
+                        <input value={image} onChange={e => this.imageChange(e.target.value)} type="text" />
                     </div>
                     <div className="input-group text-input">
                         <label htmlFor="">Content</label>
-                        <textarea value={text} onChange={e=>this.textChange(e.target.value)} placeholder="Blog here!" />
+                        <textarea value={text} onChange={e => this.textChange(e.target.value)} placeholder="Blog here!" />
                     </div>
                     <div className="buttons">
-                        <button onClick={_=>this.delete()} className='delete-button' >Delete</button>
-                        <button onClick={_=>this.cancel()} className='cancel-button'>Cancel</button>
-                        <button onClick={_=>this.updatePost()} >Update</button>
+                        <button onClick={_ => this.delete()} className='delete-button' >Delete</button>
+                        <button onClick={_ => this.cancel()} className='cancel-button'>Cancel</button>
+                        <button onClick={_ => this.updatePost()} >Update</button>
                     </div>
                     {
                         this.state.confirm
-                        ?
-                        <ConfirmModal confirm={this.state.confirm} no={this.no} yes={this.yes} />
-                        :
-                        null
+                            ?
+                            <ConfirmModal confirm={this.state.confirm} no={this.no} yes={this.yes} />
+                            :
+                            null
                     }
                 </div>
             </div>
         )
     }
 
-    yes(){
-        if (this.state.confirm === 'discard'){
+    yes() {
+        if (this.state.confirm === 'discard') {
             this.setState({
                 title: this.state.original.title,
                 subTitle: this.state.original.subTitle,
@@ -75,42 +104,42 @@ class Edit extends Component {
                 confirm: ''
             })
         }
-        else{
+        else {
             this.deletePost()
         }
     }
-    no(){
+    no() {
         this.setState({
             confirm: ''
         })
     }
-    delete(){
+    delete() {
         this.setState({
             confirm: 'delete'
         })
     }
-    cancel(){
+    cancel() {
         this.setState({
             confirm: 'discard'
         })
     }
 
-    titleChange(val){
+    titleChange(val) {
         this.setState({
             title: val
         })
     }
-    subTitleChange(val){
+    subTitleChange(val) {
         this.setState({
             subTitle: val
         })
     }
-    imageChange(val){
+    imageChange(val) {
         this.setState({
             image: val
         })
     }
-    textChange(val){
+    textChange(val) {
         this.setState({
             text: val
         })

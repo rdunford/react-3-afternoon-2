@@ -137,14 +137,11 @@
       "featured": true
     },
     {
-      "id": 14,
-      "name": "Emily Keator",
-      "userID": 2,
-      "image": "https://latimesherocomplex.files.wordpress.com/2015/04/ca-0413-the-avengers-153.jpg",
       "title": "How to De-Bug",
       "subTitle": "Not recommended for Arachnophobes",
+      "image": "https://latimesherocomplex.files.wordpress.com/2015/04/ca-0413-the-avengers-153.jpg",
       "text": "Step 1: Obtain a spider egg from a traveler from a distant land. \nStep 2: Raise your spider to a gigantic size over 20-odd years. \nStep 3: When a bug appears in your code, allow the giant spider to go on a rampage and eat every bug in the building. No humans!! Unless they are annoying. \nStep 4: This is really a terrible idea, but at least you will frighten your enemies.",
-      "featured": true
+      "id": 14
     },
     {
       "id": 15,
